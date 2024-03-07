@@ -26,7 +26,7 @@ notes.get('/api/notes/:note_Id', (req, res) => {
     return res.json('No match found');
   });
 
-// POST Route for submitting feedback
+// POST Route for submitting note
 notes.post('/', (req, res) => {
     // Log that a POST request was received
     console.info(`${req.method} request received to save note`);
@@ -40,7 +40,7 @@ notes.post('/', (req, res) => {
       const newNote = {
         title,
         text,
-        note_id: uuid(),
+        id: uuid(),
       };
   
       readAndAppend(newNote, './db/db.json');
