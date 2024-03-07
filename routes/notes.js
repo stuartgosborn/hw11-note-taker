@@ -1,4 +1,5 @@
 const notes = require('express').Router();
+const fs = require('fs');
 
 // Helper function to generate unique ids
 const uuid = require('../helpers/uuid');
@@ -11,14 +12,14 @@ notes.get('/', (req, res)=> {
 })
 
 // GET route that returns any specific term
-notes.get('/api/notes/:note_Id', (req, res) => {
-    // Coerce the specific search note_Id to lowercase
-    const requestednote_Id = req.params.note_Id.toLowerCase();
+notes.get('/:id', (req, res) => {
+    // Coerce the specific search id to lowercase
+    const requestedid = req.params.id.toLowerCase();
   
-    // Iterate through the notes name to check if it matches `req.params.note_Id`
-    for (let i = 0; i < note_IdData.length; i++) {
-      if (requestednote_Id === note_IdData[i].note_Id.toLowerCase()) {
-        return res.json(note_IdData[i]);
+    // Iterate through the notes name to check if it matches `req.params.id`
+    for (let i = 0; i < idData.length; i++) {
+      if (requestedid === idData[i].id.toLowerCase()) {
+        return res.json(idData[i]);
       }
     }
   
@@ -54,6 +55,42 @@ notes.post('/', (req, res) => {
     } else {
       res.json('Error in posting note');
     }
+  });
+
+  notes.delete('/:id', (req, res) => {
+    // Extract 'id' parameter from request URL
+    const id = req.params.id;
+  
+    // Read existing notes from db.json file
+    readFromFile('./db/db.json', 'utf8', (err, data) => {
+      if (err) {
+        console.error('Error reading db.json file:', err);
+        return res.status(500).send('Error reading data');
+      }
+  
+      // Parse existing notes from JSON
+      let notes = JSON.parse(data);
+  
+      // Find index of note with matching 'id'
+      const index = notes.findIndex(note => note.id === id);
+  
+      // If note with 'id' found, remove it
+      if (index !== -1) {
+        notes.splice(index, 1); // Remove note from array
+        // Write updated notes back to db.json file
+        fs.writeFile('./db/db.json', JSON.stringify(notes), err => {
+          if (err) {
+            console.error('Error writing to db.json file:', err);
+            return res.status(500).send('Error writing data');
+          }
+          // Send success response
+          res.status(200).send('Note deleted successfully');
+        });
+      } else {
+        // If note with 'id' not found, send 404 Not Found response
+        res.status(404).send('Note not found');
+      }
+    });
   });
 
 
