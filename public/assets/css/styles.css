@@ -5,7 +5,9 @@ body {
   padding: 0;
 }
 
-.save-note, .new-note, .clear-btn {
+.save-note,
+.new-note,
+.clear-btn {
   display: none;
 }
 
@@ -28,6 +30,7 @@ body {
   resize: none;
   height: calc(100% - 63px);
   padding-top: 15px;
+  min-height: 80vh;
 }
 
 .note-title {
