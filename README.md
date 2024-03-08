@@ -27,13 +27,11 @@ WHEN I click on the "New Note" button in the navigation at the top of the page
 THEN I am presented with empty fields to enter a new note title and the note’s text in the right-hand column and the button disappears
 ```
 
-## Screen Shot
-
-
 ## Links
 
 GitHub Repository:  
 https://github.com/stuartgosborn/hw11-note-taker  
 
-Live Page:
+Live Pages:
+https://hw11-note-taker-be0776e51d2c.herokuapp.com/notes  
 
